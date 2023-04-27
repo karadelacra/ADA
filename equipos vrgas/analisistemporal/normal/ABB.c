@@ -15,6 +15,11 @@ que se realizaron para encontrar el valor.
 #include <string.h>
 #include "libsABB/ABB.h"
 
+void insertar(Nodo** raiz, int dato);
+Nodo* buscar(Nodo* raiz, int dato);
+void imprimirInOrder(Nodo* raiz);
+void liberarArbol(Nodo* raiz);
+
 int main(int argc, char *argv[]) {
     Nodo* raiz = NULL;
     int n = atoi(argv[1]);

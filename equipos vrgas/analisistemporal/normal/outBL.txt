@@ -1,0 +1,4 @@
+
+El numero de operaciones es: 13
+
+posición[-> 112 <-]
