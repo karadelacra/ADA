@@ -1,0 +1,7 @@
+
+real (Tiempo total)  1.2520709038 s
+user (Tiempo de procesamiento en CPU's) 1.1645650000 s
+4 threads (Tiempo de procesamiento aproximado por cada thread en CPU) 0.2911412500 s
+sys (Tiempo en acciónes de E/S)  0.107 s
+CPU/Wall   101.5597436346 % 
+
