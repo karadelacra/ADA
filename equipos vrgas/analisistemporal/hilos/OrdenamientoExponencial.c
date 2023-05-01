@@ -1,113 +1,117 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
+#include "tiempo.h"
 #include <math.h>
 
-void MergeSort(int A[], int p, int r);
-void Merge(int A[],int p, int q, int r);
-int BusquedaBinaria(int A[], int inicio, int fin, int x);
-int BusquedaExponencial(int A[], int n, int x);
+//Variables globales
 
+int NumThreads;//Número de threads
+
+int INICIO, FIN;
+int i, n, a, *A, pos, N, cont, logrado;
+
+//Prototipos de funciones
+void* procesar(void* id);
+int BusquedaBinaria(int A[], int inicio, int fin, int x);
+int BusquedaExponencial(int A[], int INICIO, int FIN, int x);
+
+//Función principal
 int main(int argc, char *argv[])
 {
-    int i, j, n, *A;
-    int x,posicion=0;
+	//Variables para medir el tiempo
+    double utime0, stime0, wtime0, utime1, stime1, wtime1;
+	uswtime(&utime0, &stime0, &wtime0);
+	
+	//declarando pthreads 
+    pthread_t *thread;
 
-	if (argc != 3)
+	//Validar el número de argumentos
+	if (argc != 4) 
 	{
-		printf("\nIndique el tamanio de n - Ejemplo: [user@equipo]$ %s 100\n", argv[0]);
-		exit(1);
+		//Sino se ejecuta de la siguiente manera el programa sale
+		printf("El programa se ejecuta como: (numero de threads) (tamaño de N) (valor a buscar) (alcivo en el que se busca)  %s 4\n\n",argv[0]);
+		printf("Ejemplo:  %s 4 1000 5 < nums.txt\n",argv[0]);
+		exit(-1);
+	}  
+  	//asignar los valores de los argumentos a las variables correspondientes
+
+	NumThreads=atoi(argv[1]);
+	thread = malloc(NumThreads*sizeof(pthread_t));
+
+	N=atoi(argv[2]);
+
+    a = atoi(argv[3]);
+    A = malloc(N * sizeof(int));
+   
+    // Leer de la entrada estándar los n valores y colocarlos en el arreglo de números
+    for (i = 0; i < N; i++)
+        scanf("%d", &A[i]);
+    	    
+    for (i=1; i<NumThreads; i++) 
+	{
+		if (pthread_create (&thread[i], NULL, procesar,(void*)i) != 0 ) 
+		{
+			perror("El thread no  pudo crearse");
+			exit(-1);
+		}
 	}
+	
+	//El main ejecuta el thread 0
+	procesar(0);
+	
+	//Esperar a que terminen los threads (Saludar)
+	for (i=1; i<NumThreads; i++) pthread_join (thread[i], NULL);
 
-    n = atoi(argv[1]);
-	A = malloc(n * sizeof(int));
-    x = atoi(argv[2]);
 
-    for (i = 0; i < n; i++)
-		scanf("%d", &A[i]);
-    
-    MergeSort(A,0,n-1);
-    
-
-    posicion=BusquedaExponencial(A,n,x);
-
-    if (posicion==0)
+    uswtime(&utime1, &stime1, &wtime1);
+	//Cálculo del tiempo de ejecución del programa
+	printf("\n");
+    if(logrado == NumThreads)
     {
-         printf("valor no encontrado");
+        printf("No se encontro el numero");
+    } 
+	printf("real (Tiempo total)  %.10f s\n",  wtime1 - wtime0);
+	printf("user (Tiempo de procesamiento en CPU's) %.10f s\n",  utime1 - utime0);
+	printf("%d threads (Tiempo de procesamiento aproximado por cada thread en CPU) %.10f s\n", NumThreads,(utime1 - utime0)/NumThreads);	
+	printf("sys (Tiempo en acciónes de E/S)  %.3f s\n",  stime1 - stime0);
+	printf("CPU/Wall   %.10f %% \n",100.0 * (utime1 - utime0 + stime1 - stime0) / (wtime1 - wtime0));
+	printf("\n");
+}
+
+void* procesar(void* id)
+{	
+	int n_thread=(int)id;
+	int inicio,fin,i,pos;
+
+	//Revisar la parte de los datos a procesar	
+	inicio=(n_thread*N)/NumThreads;
+	if(n_thread==NumThreads-1)	
+		fin=N;
+	else
+		fin=((n_thread+1)*N)/NumThreads-1;
+
+    pos = BusquedaExponencial(A, inicio, fin, a);
+    if (pos != -1)
+    {
+
+        printf("posicion: %d",pos + cont);
     }
-    else{
-        printf("Valor encontrado en la posición: %d",posicion);
+    else
+    {
+        logrado++;
+        cont = cont + fin - inicio;
     }
+}
+
+int BusquedaExponencial(int A[], int INICIO, int FIN, int x) {
     
-
-}
-
-void MergeSort(int A[], int p, int r)
-{
-	int q;
-
-	if (p<r)
-	{
-		q=(p+r)/2;
-		MergeSort(A,p,q);
-		MergeSort(A,q+1,r);
-		Merge(A,p,q,r);
-	}
-}
-
-void Merge(int A[], int p, int q, int r)
-{
-	int k, l=r-p+1, i=p, j=q+1;
-
-	int *C = malloc(l * sizeof(int));
-	if (C == NULL)
-	{
-		printf("\nError al intentar reservar memoria para %d elementos\n", l);
-		exit(1);
-	}
-
-	for(k=0;k<l;k++)
-	{
-		if(i<=q&&j<=r)
-		{
-			if(A[i]<A[j])
-			{
-				C[k]=A[i];
-				i++;
-			}
-			else
-			{
-				C[k]=A[j];
-				j++;
-			}
-		}
-		else if(i<=q)
-		{
-			C[k]=A[i];
-			i++;
-		}
-		else
-		{
-			C[k]=A[j];
-			j++;
-		}
-
-	}
-	for(k=p,i=0;k<=r;k++,i++)
-	{
-		A[k]=C[i];
-	}
-
-	free(C);
-}
-
-int BusquedaExponencial(int A[], int n, int x) {
-    
-    if (A[0] == x)
-    return 0;
+    if (A[0] == x || A[n - 1] == x)
+		return 0;
 
     int i = 1;
 
-    while (i < n && A[i] < x)
+    while (i < n -1 && A[i] < x)
         i = i * 2;
     
     return BusquedaBinaria(A, i / 2, fmin(i, n - 1), x);

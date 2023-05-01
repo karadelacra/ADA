@@ -6,7 +6,7 @@
 int NumThreads;//Número de threads
 int x;
 
-int i, n, a, *A, pos, N, cont;
+int i, n, a, *A, pos, N, cont, logrado = 0;
 
 int min(int a, int y);
 int BusquedaFibonacci(int A[], int inicio, int fin, int a);
@@ -59,6 +59,10 @@ int main(int argc, char *argv[])
     uswtime(&utime1, &stime1, &wtime1);
 	//Cálculo del tiempo de ejecución del programa
 	printf("\n");
+    if(logrado == NumThreads)
+    {
+        printf("No se encontro el numero");
+    } 
 	printf("real (Tiempo total)  %.10f s\n",  wtime1 - wtime0);
 	printf("user (Tiempo de procesamiento en CPU's) %.10f s\n",  utime1 - utime0);
 	printf("%d threads (Tiempo de procesamiento aproximado por cada thread en CPU) %.10f s\n", NumThreads,(utime1 - utime0)/NumThreads);	
@@ -80,13 +84,14 @@ void* procesar(void* id)
 		fin=((n_thread+1)*N)/NumThreads-1;
 
     pos = BusquedaFibonacci(A, inicio, fin, a);
-    if (posicion != -1)
+    if (pos != -1)
     {
 
         printf("posicion: %d",pos + cont);
     }
     else
     {
+        logrado++;
         cont = cont + fin - inicio;
     }
 }
