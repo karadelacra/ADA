@@ -35,10 +35,10 @@ int main(int argc, char *argv[])
 
     if (valor==0)
     {
-         printf("valor no encontrado");
+         printf("valor no encontrado\n");
     }
     else{
-        printf("Valor encontrado y es: %d",valor);
+        printf("Valor encontrado y es: %d\n",valor);
     }
     
     
