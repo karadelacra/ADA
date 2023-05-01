@@ -4,6 +4,8 @@
 #include "tiempo.h"
 #include <math.h>
 
+//forma de compilar: gcc BusquedaExponencial.c -o BusquedaExponencial.exe -w tiempo.c -lm
+
 //Variables globales
 
 int NumThreads;//Número de threads
@@ -69,7 +71,7 @@ int main(int argc, char *argv[])
 	printf("\n");
     if(logrado == NumThreads)
     {
-        printf("No se encontro el numero");
+        printf("No se encontro el numero \n");
     } 
 	printf("real (Tiempo total)  %.10f s\n",  wtime1 - wtime0);
 	printf("user (Tiempo de procesamiento en CPU's) %.10f s\n",  utime1 - utime0);
@@ -95,7 +97,7 @@ void* procesar(void* id)
     if (pos != -1)
     {
 
-        printf("posicion: %d",pos + cont);
+        printf("posicion: %d \n",pos + cont);
     }
     else
     {
@@ -128,5 +130,5 @@ int BusquedaBinaria(int A[], int inicio, int fin, int x)
         else
             fin = medio - 1;
     }
-    return 0;  
+    return -1;  
 }
