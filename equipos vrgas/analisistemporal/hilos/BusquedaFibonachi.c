@@ -87,12 +87,11 @@ void* procesar(void* id)
     if (pos != -1)
     {
 
-        printf("posicion: %d",pos + cont);
+        printf("posicion: %d", pos + 1);
     }
     else
     {
         logrado++;
-        cont = cont + fin - inicio;
     }
 }
 
