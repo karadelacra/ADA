@@ -9,7 +9,7 @@ int x;
 int i, n, a, *A, pos, N, cont, logrado = 0;
 
 int min(int a, int y);
-int BusquedaBinaria(int A[], int n, int x, int inicio, int fin);
+int BusquedaBinaria(int A[], int x, int inicio, int fin);
 void* procesar(void* id);
 
 
@@ -83,7 +83,7 @@ void* procesar(void* id)
 	else
 		fin=((n_thread+1)*N)/NumThreads-1;
 
-    pos = BusquedaBinaria(A, N, a, inicio, fin);
+    pos = BusquedaBinaria(A, a, inicio, fin);
     if (pos != -1)
     {
 
@@ -96,7 +96,7 @@ void* procesar(void* id)
 }
 
 
-int BusquedaBinaria(int A[], int n, int x, int inicio, int fin)
+int BusquedaBinaria(int A[], int x, int inicio, int fin)
 {
     int izquierda = inicio;
     int derecha = fin - 1;
