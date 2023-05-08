@@ -10,7 +10,7 @@
 
 void LimpiarArreglo();
 void CargarArchivo();
-// void ImprimirConteo();
+void ImprimirConteo();
 
 
 int i = 0;
@@ -23,15 +23,7 @@ int main()
 {   
     LimpiarArreglo();
     CargarArchivo();
-    // ImprimirConteo();
-    
-    for (i = 0; i < 256; i++)
-    {
-       if (d[i] != 0)
-       {
-           printf("%c: %d\n", p[i], d[i]);
-       }
-    }
+    ImprimirConteo();
 
    
     return 0;
@@ -76,22 +68,25 @@ void LimpiarArreglo()
     memset(p,'\0', sizeof(p));
 }
 
-// void ImprimirConteo()
-// {
-//     FILE *archivo;
-//     archivo = fopen("salida.txt", "w");
+void ImprimirConteo()
+{
+    FILE *archivo;
+    archivo = fopen("salida.txt", "w");
 
-//     if (archivo == NULL)
-//     {
-//         printf("Error al abrir el archivo");
-//         exit(1);
-//     }
+    if (archivo == NULL)
+    {
+        printf("Error al abrir el archivo");
+        exit(1);
+    }
 
-//     for(i = 0; i < 256; i++)
-//     {
-//         fprintf(archivo, "%c: %d\n", p[i], d[i]);
-//     }
+    for (i = 0; i < 256; i++)
+    {
+       if (d[i] != 0)
+       {
+            fprintf(archivo, "%c: %d\n", i, d[i]);
+       }
+    }
     
 
-//     fclose(archivo);
-// }
+    fclose(archivo);
+}
