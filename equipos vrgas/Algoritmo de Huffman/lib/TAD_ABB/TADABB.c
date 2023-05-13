@@ -32,18 +32,6 @@ void Destroy(abb *a)
     printf("\n  ARBOL DESTRUIDO");
     return;
 }
-void CombinarArboles(abb *a, abb *b, abb *c, elemento e)
-{
-	Initialize(c);
-	c->raiz = (posicion)malloc(sizeof(nodoBin));
-	c->raiz->dato = e;
-	c->raiz->izq = a->raiz;
-	c->raiz->der = b->raiz;
-	c->raiz->padre = NULL;
-	c->finabb = NULL;
-	c->nivel = 0;
-	return;
-}
 /***************************************************************************************
 						OPERACIONES DE POSICIONAMIENTO Y B�SQUEDA
 ***************************************************************************************/
@@ -169,6 +157,52 @@ elemento Element(abb *a, posicion p)
 {
 	return p->dato;
 }
+// Recibe una posici�n e imprime el PreOrden de los elementos del �rbol a partir de la posici�n dada.
+void RecorridoPreOrden(nodoBin *nodo)
+{
+	if(nodo == NULL)
+	{
+		return;
+	}
+	printf("%s, ",nodo->dato.p);
+	RecorridoPreOrden(nodo->izq);
+	RecorridoPreOrden(nodo->der);
+}
+// Recibe una posici�n e imprime el InOrden de los elementos del �rbol a partir de la posici�n dada.
+void RecorridoInOrden(nodoBin *nodo)
+{
+	if(nodo == NULL)
+	{
+		return;
+	}
+	RecorridoInOrden(nodo->izq);
+	printf("%s, ",nodo->dato.p);
+	RecorridoInOrden(nodo->der);
+}
+// Recibe una posici�n e imprime el PostOrden de los elementos del �rbol a partir de la posici�n dada.
+void RecorridoPosOrden(nodoBin *nodo)
+{
+	if(nodo == NULL)
+	{
+		return;
+	}
+	RecorridoPosOrden(nodo->izq);
+	RecorridoPosOrden(nodo->der);
+	printf("%s, ",nodo->dato.p);
+}
+
+int altura(nodoBin *nodo)
+{
+	if(nodo==NULL){
+		return 0;}
+	int alt_izq = altura(nodo->izq);
+	int alt_der = altura(nodo->der);
+	if(alt_izq>alt_der){
+		return alt_izq + 1;}
+	else{
+		return alt_der + 1;
+	}
+}
 /***************************************************************************************
 							    OPERACIONES DE MODIFICACI�N
 ***************************************************************************************/
@@ -223,4 +257,181 @@ void Add(abb *a, elemento e)
 		nuevo->padre = aux2;
 	}
 	a->tam++;
+}
+// Reemplaza la definici�n de una palabra.
+void ReplaceDefinition(abb *a, posicion p, char def[251])
+{
+	strcpy(p->dato.d, def);
+	return;
+}
+// Elimina un elemento de la lista
+void Remove(abb *a, posicion p)
+{
+	posicion aux = p;
+	posicion aux2;
+	a->tam--;
+	
+	if(p->izq == NULL && p->der == NULL)
+	{
+		if(aux == Root(a))
+		{
+			//printf("\n Borrado %s", p->dato.p);
+			a->raiz = NULL;
+			free(aux);
+			return;
+		}
+		aux2 = Parent(a, aux);
+		if(aux2->izq == aux)
+		{
+			aux2->izq = NULL;
+		}
+		if(aux2->der == aux)
+		{
+			aux2->der = NULL;
+		}
+		//printf("\n Borrado %s", p->dato.p);
+		//printf("\nTRUENA");
+		free(aux);
+	}
+	else if((p->izq == NULL && p->der != NULL) || (p->izq != NULL && p->der == NULL))
+	{
+		aux2 = Parent(a, aux);
+		if(aux2->izq == aux)
+		{
+			if(aux->izq != NULL)
+			{
+				aux2->izq = aux->izq;
+			}
+			if(aux->der != NULL)
+			{
+				aux2->izq = aux->der;
+			}
+			aux->izq->padre = aux2;
+		}
+		if(aux2->der == aux)
+		{
+			if(aux->izq != NULL)
+			{
+				aux2->der = aux->izq;
+			}
+			if(aux->der != NULL)
+			{
+				aux2->der = aux->der;
+			}
+			aux->der->padre = aux2;
+		}
+		//printf("\n Borrado %s", p->dato.p);
+		free(aux);
+	}
+	else
+	{
+		aux = aux->der;
+		while(aux->izq != NULL)
+		{
+			aux = aux->izq;
+		}
+		if(aux->padre->izq == aux)
+		{
+			p->dato = aux->dato;
+			aux->padre->izq = NULL;
+			//printf("\n Borrado %s", p->dato.p);
+			
+			free(aux);
+		}
+		else
+		{
+			elemento e2;
+			
+			e2 = p->dato;
+			p->dato = aux->dato;
+			aux->dato = e2;
+			a->tam++;
+			Remove(a, aux);
+		}
+		
+		//p->dato = aux->dato;
+		//aux->padre->izq = NULL;
+		//free(aux);
+
+
+	}
+	
+}
+/***************************************************************************************
+						  OPERACIONES DE CONSULTA (DEPURACI�N)
+***************************************************************************************/
+void VerLigas(abb *a)
+{
+	int i = 0;
+	posicion aux;	
+	aux=Root(a);
+	printf("\n*****************************************************************************************************");
+	InOrdenDetallado(aux);
+	printf("\n*****************************************************************************************************");
+	printf("\n  Ra%cz del %crbol: %s",161, 160,aux->dato.p);
+	printf("\n  Altura del %crbol: %d", 160, altura(Root(a)));
+	printf("\n  Cantidad de elementos=%d",a->tam);
+	return;
+}
+
+void PreOrdenDetallado(nodoBin *nodo)
+{
+	if(nodo == NULL)
+	{
+		printf("\nNULL");
+		return;
+	}
+	printf("\nNO DEBERIA");
+	Detalles(nodo);
+	PreOrdenDetallado(nodo->izq);
+	PreOrdenDetallado(nodo->der);
+}
+
+void InOrdenDetallado(nodoBin *nodo)
+{
+	if(nodo == NULL)
+	{
+		return;
+	}
+	InOrdenDetallado(nodo->izq);
+	Detalles(nodo);
+	InOrdenDetallado(nodo->der);
+}
+
+void PosOrdenDetallado(nodoBin *nodo)
+{
+	if(nodo == NULL)
+	{
+		return;
+	}
+	PosOrdenDetallado(nodo->izq);
+	PosOrdenDetallado(nodo->der);
+	Detalles(nodo);
+}
+
+void Detalles(nodoBin *nodo)
+{
+	printf("\nPos=%d\t",nodo);
+	printf("Padre=");
+	if(nodo->padre == 0){
+		printf("\033[31m%d\033[0m\t\t", nodo->padre);
+	}
+	else{
+		printf("%s\t\t",nodo->padre->dato.p);
+	}
+	printf("HijoIzq=");
+	if(nodo->izq == 0){
+		printf("\033[31m%d\033[0m\t", nodo->izq);
+	}
+	else{
+		printf("%s\t",nodo->izq->dato.p);
+	}
+	printf("HijoDer=");
+	if(nodo->der == 0){
+		printf("\033[31m%d\033[0m\t", nodo->der);
+	}
+	else{
+		printf("%s\t",nodo->der->dato.p);
+	}
+	printf("Palabra: %s",nodo->dato.p);
 }

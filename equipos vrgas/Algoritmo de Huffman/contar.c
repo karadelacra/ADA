@@ -12,6 +12,7 @@ void LimpiarArreglo();
 void CargarArchivo();
 void shell(int *d, int *p, int n);
 void Imprimir(int d[], int p[]);
+void CrearArboles();
 
 int i = 0;
 char caracter = 'a';
@@ -118,4 +119,24 @@ void Imprimir(int d[], int p[])
     }
 
     fclose(archivo);
+}
+// la siguiente función creará el árbol de huffman 
+// se creará un árbol con cada caracter y su frecuencia
+// luego se unirán los dos nodos con menor frecuencia y se creará un nuevo nodo con la suma de las frecuencias de los dos nodos anteriores
+// se repetirá el proceso hasta que solo quede un nodo
+// el nodo final será la raíz del árbol
+void CrearArboles()
+{ 
+    FILE *archivo;
+    archivo = fopen("salida.txt", "rb");
+    abb *arbol;
+    Initialize(&arbol);
+
+    for (i = 0; i <= 256; i++)
+    {
+        if (d[i] != 0)
+        {
+            Add(&arbol, d[i]);
+        }
+    }
 }

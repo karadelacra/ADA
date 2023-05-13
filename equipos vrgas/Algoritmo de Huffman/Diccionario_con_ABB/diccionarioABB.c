@@ -8,9 +8,16 @@
 gcc -o diccionarioABB.exe diccionarioABB.c lib/TAD_ABB/TADABB.c lib/presentacionWin.c
 */
 void cargarArchivo(abb *a);
+void agregarPalabra(abb *a);
 void buscarPalabra(abb *a);
+void modificarPalabra(abb *a);
+void eliminarPalabra(abb *a);
+void recorridoPre(abb *a);
 void recorridoIn(abb *a);
+void recorridoPost(abb *a);
+void verEstadisticas(abb *a);
 
+void dibujarMenu();
 void limpiarBuffer();
 
 int main()
