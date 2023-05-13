@@ -20,8 +20,8 @@ declaración de las operaciones del TAD  ABB.
 
 typedef struct elemento
 {
-	char p[101];
-	char d[251];
+	char p[100];
+	char d[100];
 } elemento;
 
 typedef struct nodoBin
@@ -52,7 +52,9 @@ typedef struct abb
 
 //OPERACIONES DE CONSTRUCCI�N
 void Initialize (abb *a);									// Efecto: Recibe un ABB a y lo inicializa para su trabajo normal.
-void Destroy (abb *a);										// Efecto: Recibe un ABB a y lo libera completamente.
+void Destroy (abb *a);								// Efecto: Recibe un ABB a y lo libera completamente.
+void CombinarArboles(abb *a, abb *b, abb *c, elemento e);	// Efecto: Recibe dos ABB a y b, y un elemento e, crea un nuevo ABB c con a y b como hijos y e como raiz.
+
 //OPERACIONES DE POSICIONAMIENTO Y B�SQUEDA
 posicion Root(abb *a);										// Efecto: Recibe un ABB y devuelve la posici�n de la ra�z.
 posicion Parent(abb *a, posicion p);						// Efecto: Recibe un ABB a y una posici�n p, devuelve la posici�n de el padre.
@@ -65,22 +67,11 @@ bool Empty (abb *a);										// Efecto: Recibe un ABB a y devuelve si la lista 
 bool NullNode(abb *a, posicion p);							// Efecto: Recibe un ABB a y una posici�n p, devuelve verdadero si la posici�n p del ABB es nula o incorrecta.
 bool BuscarPosicion(posicion nodo, posicion p); 			// Efecto: Recibe una posicion nodo y una posicion p y busca recursivamente si la posicion p se encuentra en el �rbol
 int Size (abb *a);											// Efecto: Recibe un ABB a y regresa el tamaño de la lista.
-elemento Element(abb *a, posicion p);						// Efecto: Recibe un ABB y una posici�n p, regresa el elemento en dicha posici�n.
-void RecorridoPreOrden(nodoBin *nodo);						// Efecto: Recibe una posici�n e imprime el PreOrden de los elementos del �rbol a partir de la posici�n dada.
-void RecorridoInOrden(nodoBin *nodo);						// Efecto: Recibe una posici�n e imprime el InOrden de los elementos del �rbol a partir de la posici�n dada.
-void RecorridoPosOrden(nodoBin *nodo);						// Efecto: Recibe una posici�n e imprime el PostOrden de los elementos del �rbol a partir de la posici�n dada.
-int altura(nodoBin *nodo);
+elemento Element(abb *a, posicion p);					// Efecto: Recibe una posici�n e imprime el PostOrden de los elementos del �rbol a partir de la posici�n dada.
 //OPERACIONES DE MODIFICACI�N
 void Add(abb *a, elemento e);								// Efecto: Recibe un ABB a y un elemento e, el elemento e se agregar� al �rbol dependiendo de su tama�o
 void ReplaceDefinition(abb *a, posicion p, char def[251]);	// Efecto: Recibe un ABB a, una posici�n p y una definici�n, reemplaza la definici�n del elemento en la posici�n dada.
 void Remove(abb *a, posicion p);
-//OPERACIONES DE CONSULTA (DEPURACI�N)
-void VerLigas(abb *a);										// Efecto: Imprime c�mo est� enlazado el �rbol binario a detalle.
-void PreOrdenDetallado(nodoBin *nodo);						// Efecto: Recibe una posici�n e imprime el PreOrden de los elementos del �rbol a partir de la posici�n dada.
-void InOrdenDetallado(nodoBin *nodo);						// Efecto: Recibe una posici�n e imprime el InOrden de los elementos del �rbol a partir de la posici�n dada.
-void PosOrdenDetallado(nodoBin *nodo);						// Efecto: Recibe una posici�n e imprime el PostOrden de los elementos del �rbol a partir de la posici�n dada.
-void Detalles(nodoBin *nodo);								// Efecto: Imprime los detalles de un elemento del �rbol.
-
 
 
 
