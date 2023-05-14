@@ -20,8 +20,8 @@ declaración de las operaciones del TAD  ABB.
 
 typedef struct elemento
 {
-	int p[15];
-	char d[15];
+	int d[15];
+	char p[15];
 } elemento;
 
 typedef struct nodoBin

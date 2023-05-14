@@ -126,6 +126,7 @@ void cargarArchivo(abb *a)
         }
         else if ((int)caracter == '\n' || (int)caracter == -1)
         {
+            
             strncpy(e.d,d,101);
             EsPalabra = true;
             Add(a, e);

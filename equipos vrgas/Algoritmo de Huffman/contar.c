@@ -127,16 +127,22 @@ void Imprimir(int d[], int p[])
 // el nodo final será la raíz del árbol
 void CrearArboles()
 { 
+    elemento e;
+    char caracter = 'a';
+    int frecuencia = 0;
+    char 
     FILE *archivo;
     archivo = fopen("salida.txt", "rb");
     abb *arbol;
     Initialize(&arbol);
 
-    for (i = 0; i <= 256; i++)
+    while ((c = fgetc(archivo)) != -1)
     {
-        if (d[i] != 0)
+        if (putchar(c) != 1)
         {
-            Add(&arbol, d[i]);
+            //   printf("letra: %c\n", c);
+            k = putchar(c);
+                       
         }
     }
 }
