@@ -209,11 +209,6 @@ int altura(nodoBin *nodo)
 // Inserta un elemento en el �rbol
 void Add(abb *a, elemento e)
 {
-    if(Search(a, e) != NULL)
-    {
-    	printf("\n YA EXISTE LA PALABRA");
-    	return;
-	}
 	bool EsDerecho;
     posicion nuevo;
     posicion aux = a->raiz;
@@ -233,10 +228,11 @@ void Add(abb *a, elemento e)
 		while(aux != NULL)
 		{
 			aux2 = aux;	
-			if(strcmp(e.p, aux->dato.p) > 0)
+			if(strcmp(e.d, aux->dato.d) > 0)
 			{
 				EsDerecho = true;
 				aux = aux->der;
+
 				//printf("\n ES DERECHO");
 			}
 			else
@@ -434,4 +430,9 @@ void Detalles(nodoBin *nodo)
 		printf("%s\t",nodo->der->dato.p);
 	}
 	printf("Palabra: %s",nodo->dato.p);
+}
+
+void BorrarPantalla()
+{
+	system("cls");
 }

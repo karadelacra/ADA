@@ -8,38 +8,44 @@
 #include "lib/TAD_ABB/TADABB.h"
 #include "lib/presentacion.h"
 
+// forma de compilar gcc .\contar.c -o .\contar.exe lib/TAD_ABB/TADABB.c lib/presentacionWin.c -w
+
 void LimpiarArreglo();
-void CargarArchivo();
+void CargarArchivo(abb *arbol);
 void shell(int *d, int *p, int n);
 void Imprimir(int d[], int p[]);
-void CrearArboles();
+void CargarArbol(abb *arbol, int d[], int p[]);
+void limpiarBuffer();
 
 int i = 0;
 char caracter = 'a';
 int k, c;
-int r = 256;
-int pp = 0;
-int q;
 int d[256];
 int p[256];
 char direccion[256];
 
 int main()
 {
-    LimpiarArreglo();
-    CargarArchivo();
-    Imprimir(d, p);
+    abb arbol;
+    elemento e;
+    posicion pos;
+    Initialize(&arbol);
+    BorrarPantalla();
+    printf("\n\033[34m Compresor de Archivos\n");
+    printf("Archivo a comprimir: ");
+    scanf("%s", direccion);
+    CargarArchivo(&arbol);
+    
 
     return 0;
 }
 
-void CargarArchivo()
+void CargarArchivo(abb *arbol)
 {
-    FILE *archivo;
-    printf("Ingrese la direccion del archivo: \n");
-    scanf("%s", direccion);
+    LimpiarArreglo();
+    FILE *archivo, *r;
     archivo = fopen(direccion, "rb");
-
+    r = fopen("basura.txt", "wb");
     if (archivo == NULL)
     {
         printf("Error al abrir el archivo");
@@ -48,10 +54,9 @@ void CargarArchivo()
     while ((c = fgetc(archivo)) != -1)
     {
 
-        if (putchar(c) != 1)
+        if (fgetc(archivo) != 1)
         {
-            //   printf("letra: %c\n", c);
-            k = putchar(c);
+            k = fputc(c, r);
             if (k == p[k])
             {
                 d[k]++;
@@ -63,7 +68,12 @@ void CargarArchivo()
             }
         }
     }
+
+    Imprimir(d, p);
+    CargarArbol(&arbol, d, p);
     fclose(archivo);
+    fclose(r);
+    remove("basura.txt");
 }
 
 void LimpiarArreglo()
@@ -74,27 +84,30 @@ void LimpiarArreglo()
 
 void shell(int *d, int *p, int n)
 {
-    int i,k,b,temp,temp2;
+    int i, k, b, temp, temp2;
 
-    k=trunc(n/2);
-    while(k>=1){
+    k = trunc(n / 2);
+    while (k >= 1)
+    {
         b = 1;
-        while (b!=0){
-            b=0;
-            for (i=k; i<n; i++){
-                if (d[i-k] > d[i]){
-                    temp=d[i];
-                    temp2=p[i];
-                    d[i]=d[i-k];
-                    p[i]=p[i-k];
-                    d[i-k]=temp;
-                    p[i-k]=temp2;
-                    b=b+1;
+        while (b != 0)
+        {
+            b = 0;
+            for (i = k; i < n; i++)
+            {
+                if (d[i - k] > d[i])
+                {
+                    temp = d[i];
+                    temp2 = p[i];
+                    d[i] = d[i - k];
+                    p[i] = p[i - k];
+                    d[i - k] = temp;
+                    p[i - k] = temp2;
+                    b = b + 1;
                 }
             }
-
         }
-        k=trunc(k/2);
+        k = trunc(k / 2);
     }
 }
 
@@ -120,29 +133,37 @@ void Imprimir(int d[], int p[])
 
     fclose(archivo);
 }
-// la siguiente función creará el árbol de huffman 
-// se creará un árbol con cada caracter y su frecuencia
-// luego se unirán los dos nodos con menor frecuencia y se creará un nuevo nodo con la suma de las frecuencias de los dos nodos anteriores
-// se repetirá el proceso hasta que solo quede un nodo
-// el nodo final será la raíz del árbol
-void CrearArboles()
-{ 
-    elemento e;
-    char caracter = 'a';
-    int frecuencia = 0;
-    char 
-    FILE *archivo;
-    archivo = fopen("salida.txt", "rb");
-    abb *arbol;
-    Initialize(&arbol);
 
-    while ((c = fgetc(archivo)) != -1)
+void CargarArbol(abb *arbol, int d[], int p[])
+{
+    elemento e;
+    int cont = 0;
+    for (i = 0; i <= 256; i++)
     {
-        if (putchar(c) != 1)
+        if (d[i] != '\0' && p[i] != ':')
         {
-            //   printf("letra: %c\n", c);
-            k = putchar(c);
-                       
+            sprintf(&e.p, "%c", p[i]);
+            e.d = d[i];
+            cont = 0;
+        }
+        else if (cont == 0 && p[i] == ':')
+        {
+            cont++;
+        }
+        if (cont == 1 && p[i] == ':')
+        {
+            cont = 1;
+            sprintf(&e.p, "%c", p[i]);
+            e.d = d[i];
+        }
+        if (cont == 1 && p[i] != ':')
+        {
+            sprintf(&e.p, "%c", p[i]);
+            e.d = d[i];
+            Add(arbol, e);
         }
     }
+    RecorridoInOrden(&arbol);
 }
+
+

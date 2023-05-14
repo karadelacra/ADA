@@ -27,9 +27,4 @@ void EsperarMiliSeg(int t)
 	return;
 }
 
-//Funci�n para borrar la pantalla de la consola, simulaci�n de la funci�n clrscr() que se tenia en borland 3.0 en la libreria conio.h
-void BorrarPantalla(void)
-{
-	system("cls");
-	return;
-}
+

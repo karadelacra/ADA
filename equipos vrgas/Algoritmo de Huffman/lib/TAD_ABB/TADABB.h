@@ -20,8 +20,9 @@ declaración de las operaciones del TAD  ABB.
 
 typedef struct elemento
 {
-	int d[15];
-	char p[15];
+	long long int d;
+	char p;
+    int soy;
 } elemento;
 
 typedef struct nodoBin
@@ -79,7 +80,9 @@ void VerLigas(abb *a);										// Efecto: Imprime c�mo est� enlazado el �
 void PreOrdenDetallado(nodoBin *nodo);						// Efecto: Recibe una posici�n e imprime el PreOrden de los elementos del �rbol a partir de la posici�n dada.
 void InOrdenDetallado(nodoBin *nodo);						// Efecto: Recibe una posici�n e imprime el InOrden de los elementos del �rbol a partir de la posici�n dada.
 void PosOrdenDetallado(nodoBin *nodo);						// Efecto: Recibe una posici�n e imprime el PostOrden de los elementos del �rbol a partir de la posici�n dada.
-void Detalles(nodoBin *nodo);								// Efecto: Imprime los detalles de un elemento del �rbol.
+void Detalles(nodoBin *nodo);
+void BorrarPantalla(void); //Funci�n para borrar la pantalla de la consola, simulaci�n de la funci�n clrscr() que se tenia en borland 3.0 en la libreria conio.h
+							
 
 
 

@@ -8,10 +8,10 @@
 gcc -o diccionarioABB.exe diccionarioABB.c lib/TAD_ABB/TADABB.c lib/presentacionWin.c
 */
 void cargarArchivo(abb *a);
-void agregarPalabra(abb *a);
-void buscarPalabra(abb *a);
-void modificarPalabra(abb *a);
-void eliminarPalabra(abb *a);
+void agregarCaracter(abb *a);
+void buscarCaracter(abb *a);
+void modificarCaracter(abb *a);
+void eliminarCaracter(abb *a);
 void recorridoPre(abb *a);
 void recorridoIn(abb *a);
 void recorridoPost(abb *a);
@@ -43,16 +43,16 @@ int main()
             cargarArchivo(&arbol);
             break;
         case 2:
-            agregarPalabra(&arbol);
+            agregarCaracter(&arbol);
             break;
         case 3:
-            buscarPalabra(&arbol);
+            buscarCaracter(&arbol);
             break;
         case 4:
-            modificarPalabra(&arbol);
+            modificarCaracter(&arbol);
             break;
         case 5:
-            eliminarPalabra(&arbol);
+            eliminarCaracter(&arbol);
             break;
         case 6:
             recorridoPre(&arbol);
@@ -93,7 +93,7 @@ void cargarArchivo(abb *a)
     char d[251];
     int i = 0;
     int j, renglones = 0;
-    bool EsPalabra = true;
+    bool EsCaracter = true;
 	
     printf("\n\n    Introduzca la direcci%cn: ", 162);
     scanf("%s", direccion);
@@ -108,12 +108,12 @@ void cargarArchivo(abb *a)
     while ((int)caracter != -1)
     {
         caracter = fgetc(flujo);
-        if (EsPalabra == true && (int)caracter != ':')
+        if (EsCaracter == true && (int)caracter != ':')
         {
             p[i] = caracter;
             i++;
         }
-        else if (EsPalabra == false && (int)caracter != '\n' && (int)caracter != -1 && (int)caracter != 13)
+        else if (EsCaracter == false && (int)caracter != '\n' && (int)caracter != -1 && (int)caracter != 13)
         {
             d[i] = caracter;
             i++;
@@ -121,14 +121,14 @@ void cargarArchivo(abb *a)
         if ((int)caracter == ':')
         {
             strncpy(e.p,p,101);
-            EsPalabra = false;
+            EsCaracter = false;
             i = 0;
         }
         else if ((int)caracter == '\n' || (int)caracter == -1)
         {
             
             strncpy(e.d,d,101);
-            EsPalabra = true;
+            EsCaracter = true;
             Add(a, e);
             memset(p, 0, 101);
             memset(e.p, 0, 101);
@@ -142,31 +142,31 @@ void cargarArchivo(abb *a)
         }
     }
     fclose(flujo);
-    printf("\n\n   \033[95mSe cargaron %d palabras\033[0m\n", renglones);
+    printf("\n\n   \033[95mSe cargaron %d Caracters\033[0m\n", renglones);
     printf("\n  Altura del arbol: %d", altura(Root(a)));
     printf("\n\n   Presiona cualquier tecla para continuar\n");
     getchar();
 }
 //2
-void agregarPalabra(abb *a)
+void agregarCaracter(abb *a)
 {
     BorrarPantalla();
-	printf("\n\t\033[95m2. AGREGAR UNA PALABRA.\033[0m");
+	printf("\n\t\033[95m2. AGREGAR UNA Caracter.\033[0m");
 	
-	char palabra[101];
+	char Caracter[101];
     int modificar;
     int comps = 0;
     int i;
     elemento e;
     posicion p;
 
-    printf("\n\n    Palabra a Agregar: ");
-    scanf("%s", palabra);
-	strcpy(e.p, palabra);
+    printf("\n\n    Caracter a Agregar: ");
+    scanf("%s", Caracter);
+	strcpy(e.p, Caracter);
 	p = Search(a, e);
     if (p != NULL)
     {
-        printf("\nLa palabra \"%s\" ya existe\n", palabra);
+        printf("\nLa Caracter \"%s\" ya existe\n", Caracter);
         printf("Definici%cn: %s\n", 162, Element(a, p).d);
         printf("\n  N%cmero de b%csquedas: %d",163,163,a->ultbusq);
         printf("\n\n¿Desea modificar la definici%cn? (1/0): ",162);
@@ -187,7 +187,7 @@ void agregarPalabra(abb *a)
     	fgets(e.d, 251, stdin);
     	Add(a, e);
     	printf("\n  Altura del arbol: %d", altura(Root(a)));
-    	printf("\n\n   \033[95mSe carg%c 1 palabra\033[0m\n", 162);
+    	printf("\n\n   \033[95mSe carg%c 1 Caracter\033[0m\n", 162);
 	}
 	//getchar();
     //informacionBusqueda(t, lista, comps);
@@ -196,51 +196,51 @@ void agregarPalabra(abb *a)
     //getchar();
 }
 //3
-void buscarPalabra(abb *a)
+void buscarCaracter(abb *a)
 {
 	BorrarPantalla();
-	printf("\n\t\033[95m3. BUSCAR UNA PALABRA.\033[0m");
+	printf("\n\t\033[95m3. BUSCAR UNA Caracter.\033[0m");
 	
-	char palabra[101];
+	char Caracter[101];
     int i;
     elemento e;
     posicion p;
 
-    printf("\n\n    Palabra a buscar: ");
-    scanf("%s", palabra);
-    strcpy(e.p, palabra);
+    printf("\n\n    Caracter a buscar: ");
+    scanf("%s", Caracter);
+    strcpy(e.p, Caracter);
     p = Search(a, e);
     if (p != NULL)
     {
-    	printf("\n   La palabra \"%s\" se encontr%c", palabra, 162);
+    	printf("\n   La Caracter \"%s\" se encontr%c", Caracter, 162);
         printf("\n   Definici%cn: %s\n", 162, Element(a, p).d);
     }
     else
     {
-    	printf("\n\n   La palabra \"%s\" \033[31mNO\033[0m se encontr%c\n", palabra, 162);
+    	printf("\n\n   La Caracter \"%s\" \033[31mNO\033[0m se encontr%c\n", Caracter, 162);
 	}
     printf("\n  N%cmero de b%csquedas: %d",163,163,a->ultbusq);
 	printf("\n\n   Presiona cualquier tecla para continuar\n");
 	getchar();
 }
 //4
-void modificarPalabra(abb *a)
+void modificarCaracter(abb *a)
 {
 	BorrarPantalla();
 	printf("\n\t\033[95m4. MODIFICAR UNA DEFINICI%cN.\033[0m",224);
 	
-	char palabra[101];
+	char Caracter[101];
 	elemento e;
     posicion p;
 
-    printf("\n\n    Palabra a modificar: ");
-    scanf("%s", palabra);
-    strcpy(e.p, palabra);
+    printf("\n\n    Caracter a modificar: ");
+    scanf("%s", Caracter);
+    strcpy(e.p, Caracter);
     p = Search(a, e);
     
     if (p != NULL)
     {
-    	printf("\nLa palabra \"%s\" se encontr%c\n", palabra, 162);
+    	printf("\nLa Caracter \"%s\" se encontr%c\n", Caracter, 162);
         printf("Definici%cn: %s\n", 162, Element(a, p).d);
         printf("\n  N%cmero de b%csquedas: %d",163,163,a->ultbusq);
         printf("\nNueva definici%cn: ", 162);
@@ -251,7 +251,7 @@ void modificarPalabra(abb *a)
     }
     else
     {
-    	printf("\n\n   La palabra \"%s\" \033[31mNO\033[0m se encontr%c\n", palabra, 162);
+    	printf("\n\n   La Caracter \"%s\" \033[31mNO\033[0m se encontr%c\n", Caracter, 162);
         getchar();
 	}
     
@@ -260,27 +260,27 @@ void modificarPalabra(abb *a)
 	//getchar();
 }
 //5
-void eliminarPalabra(abb *a)
+void eliminarCaracter(abb *a)
 {
 	BorrarPantalla();
-	printf("\n\t\033[95m5. ELIMINAR UNA PALABRA.\033[0m",224);
+	printf("\n\t\033[95m5. ELIMINAR UNA Caracter.\033[0m",224);
 	
-	char palabra[101];
+	char Caracter[101];
 	elemento e;
     posicion p;
 
-    printf("\n\n    Palabra a eliminar: ");
-    scanf("%s", palabra);
-    strcpy(e.p, palabra);
+    printf("\n\n    Caracter a eliminar: ");
+    scanf("%s", Caracter);
+    strcpy(e.p, Caracter);
     p = Search(a, e);
     if (p != NULL)
     {
     	Remove(a, p);
-        printf("\n\n   \033[95mSe elimin%c la palabra \"%s\" exitosamente.\033[0m\n",162, palabra);
+        printf("\n\n   \033[95mSe elimin%c la Caracter \"%s\" exitosamente.\033[0m\n",162, Caracter);
     }
     else
     {
-    	printf("\n\n   La palabra \"%s\" \033[31mNO\033[0m se encontr%c\n", palabra, 162);
+    	printf("\n\n   La Caracter \"%s\" \033[31mNO\033[0m se encontr%c\n", Caracter, 162);
 	}
     printf("\n  N%cmero de b%csquedas: %d",163,163,a->ultbusq);
     printf("\n  Altura del arbol: %d", altura(Root(a)));
@@ -333,10 +333,10 @@ void dibujarMenu()
     printf("\n  \033[34m%c\033[35m%c      \033[34m%c\033[35m%c \033[34m%c\033[35m%c%c%c%c \033[34m%c\033[35m%c    \033[34m%c\033[35m%c \033[34m%c\033[45m%c\033[40m\033[35m%c%c%c%c%c", 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 219, 223, 220, 219, 219, 219, 219, 223);
     printf("\n\033[0m\n");
     printf("1. Cargar un archivo de texto\n");
-    printf("2. Agregar una palabra\n");
-    printf("3. Buscar una palabra\n");
+    printf("2. Agregar una Caracter\n");
+    printf("3. Buscar una Caracter\n");
     printf("4. Modificar una definici%cn\n",162);
-    printf("5. Eliminar una palabra\n");
+    printf("5. Eliminar una Caracter\n");
     printf("6. Recorrido PreOrden\n");
     printf("7. Recorrido InOrden\n");
     printf("8. Recorrido PostOrden\n");
